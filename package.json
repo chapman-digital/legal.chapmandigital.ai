@@ -1,0 +1,17 @@
+{
+  "name": "legal-chapmandigital-ai",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CD-AI legal documents (Terms of Service and Privacy Policy) served at legal.chapmandigital.ai",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.0",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.0"
+  }
+}

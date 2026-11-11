@@ -1,0 +1,74 @@
+---
+import "../styles/site.css";
+import { SITE } from "../config";
+
+interface Props {
+  title: string;
+  description: string;
+  type?: "WebPage" | "CollectionPage";
+}
+
+const { title, description, type = "WebPage" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const fullTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": type,
+  name: title,
+  description,
+  url: canonical,
+  publisher: { "@type": "Organization", name: SITE.legalName, url: SITE.company },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#111827" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="/" aria-label="CD-AI Legal home">CD-AI <span>Legal</span></a>
+        <nav aria-label="Legal documents">
+          <a href="/terms/" aria-current={Astro.url.pathname === "/terms/" ? "page" : undefined}>Terms</a>
+          <a href="/privacy/" aria-current={Astro.url.pathname === "/privacy/" ? "page" : undefined}>Privacy</a>
+          <a class="site-header__app" href={SITE.app}>Open CD-AI</a>
+        </nav>
+      </div>
+    </header>
+    <slot name="hero" />
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <p>&copy; {new Date().getFullYear()} {SITE.legalName} &middot; 500 Grossman Dr # 1198, Braintree, MA 02184, USA</p>
+        <nav aria-label="Footer">
+          <a href="/terms/">CD-AI Terms</a>
+          <a href="/privacy/">CD-AI Privacy</a>
+          <a href={SITE.companyLegal}>Chapman Digital legal &amp; policies</a>
+          <a href={SITE.company}>chapmandigital.com</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

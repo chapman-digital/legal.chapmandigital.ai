@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import { CONTACTS, DOCUMENTS, SITE } from "../config";
+
+const entries = await getCollection("docs");
+const documents = DOCUMENTS.map((doc) => {
+  const entry = entries.find((e) => e.id === doc.id);
+  if (!entry) throw new Error(`Missing legal document: ${doc.id}`);
+  return { ...doc, title: entry.data.title, updated: entry.data.updated };
+});
+const description =
+  "Terms of Service and Privacy Policy for CD-AI, Chapman Digital's AI workspace at chapmandigital.ai, including Triavera AI.";
+---
+
+<Base title={SITE.name} description={description} type="CollectionPage">
+  <section slot="hero" class="hero">
+    <div class="container">
+      <p class="eyebrow">Chapman Digital / CD-AI</p>
+      <h1>CD-AI <span>legal.</span></h1>
+      <p class="hero__lead">
+        The terms and privacy policy for <a href={SITE.app}>CD-AI</a>, our AI workspace, and the models on it,
+        including Triavera AI.
+      </p>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="cards">
+      {documents.map((doc) => (
+        <article class="card">
+          <h2><a href={doc.href}>{doc.title}</a></h2>
+          <p class="card__updated">{doc.updated}</p>
+          <p>{doc.summary}</p>
+          <ul class="tags" aria-label="Topics covered">
+            {doc.topics.map((topic) => <li>{topic}</li>)}
+          </ul>
+          <a class="card__link" href={doc.href}>Read full document<span class="sr-only">: {doc.title}</span> &rarr;</a>
+        </article>
+      ))}
+    </div>
+
+    <section class="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Questions about these documents?</h2>
+      <ul>
+        {CONTACTS.map((c) => (
+          <li><span>{c.label}</span> <a href={`mailto:${c.email}`}>{c.email}</a></li>
+        ))}
+      </ul>
+      <p class="muted">
+        Looking for policies for the Chapman Digital company website? See <a href={SITE.companyLegal}>Chapman Digital Legal &amp; Policies</a>.
+      </p>
+    </section>
+  </div>
+</Base>

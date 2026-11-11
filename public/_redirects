@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects
+# Old slugs from chapmandigital.com, in case links use them on this domain
+/cd-ai-terms /terms/ 301
+/cd-ai-terms/ /terms/ 301
+/cd-ai-privacy-policy /privacy/ 301
+/cd-ai-privacy-policy/ /privacy/ 301
+/sitemap.xml /sitemap-index.xml 301
