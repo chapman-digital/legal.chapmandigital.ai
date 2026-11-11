@@ -24,4 +24,4 @@ npm run dev     # http://localhost:4321
 npm run build   # static output in dist/
 ```
 
-Deployed on Cloudflare Pages: build command `npm run build`, output directory `dist`, custom domain `legal.chapmandigital.ai`.
+Deployed on Cloudflare Workers (static assets, configured in `wrangler.toml`): build command `npm run build`, deploy command `npx wrangler deploy`, custom domain `legal.chapmandigital.ai`. `public/_redirects` and `public/_headers` are applied by Workers static assets.
